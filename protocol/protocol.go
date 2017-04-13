@@ -12,6 +12,7 @@ node will only use the `Handle`-methods, and not call `Start` again.
 
 import (
 	"errors"
+	"time"
 
 	"gopkg.in/dedis/onet.v1"
 	"gopkg.in/dedis/onet.v1/log"
@@ -85,4 +86,18 @@ func (p *ProtocolTemplate) HandleReply(reply []StructReply) error {
 	log.Lvl3("Root-node is done - nbr of children found:", children)
 	p.ChildCount <- children
 	return nil
+}
+
+func (p* ProtocolTemplate) broadcastBlocks() error {
+	temp := 0.0
+	start := time.Now()
+	for {
+		if(time.Now().Sub(start).Seconds() > 6){
+			start = time.Now()
+			temp = rand.Float64()
+			if(temp < 0.1){
+				//broadcast a block
+			}
+		}		
+	}
 }

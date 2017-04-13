@@ -7,11 +7,15 @@ runs on the node.
 
 import (
 	"time"
-
+	"bytes"
+	
 	"github.com/dedis/cothority_template/protocol"
 	"gopkg.in/dedis/onet.v1"
 	"gopkg.in/dedis/onet.v1/log"
 	"gopkg.in/dedis/onet.v1/network"
+	
+	"github.com/dedis/cothority/byzcoin/blockchain"
+	"github.com/dedis/cothority/byzcoin/blockchain/blkparser"
 )
 
 // Name is the name to refer to the Template service from another
@@ -77,4 +81,16 @@ func newService(c *onet.Context) onet.Service {
 		log.ErrFatal(err, "Couldn't register messages")
 	}
 	return s
+}
+
+func (s *Service) createAndParseBlockRequest(req *createAndParseBlockRequest) (network.Message, onet.ClientError) {
+	//chain := blkparser.NewBlockchain
+
+	b := make([]byte, 32)
+	block := blkparser.NewBlock(b)
+	blockchain.Parse(block, 1)
+	
+	tree := req.Roster.GenerateBinaryTree()
+	pi, err := s.CreateProtocol(template.Name, tree)
+
 }
