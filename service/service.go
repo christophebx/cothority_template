@@ -20,9 +20,11 @@ import (
 // Name is the name to refer to the Template service from another
 // package.
 const Name = "Template"
+Blockchain chain
 
 func init() {
 	onet.RegisterNewService(Name, newService)
+	chain := blkparser.NewBlockchain
 }
 
 // Service is our template-service
@@ -96,4 +98,10 @@ func (s *Service) createAndParseBlockRequest(tn *onet.TreeNodeInstance, conf *on
 			start = time.Now()
 		}
 	}
+}
+
+// function to receive the message from the children and put blocks in the blockchain
+
+func ReceiveMessage(b *block) error {
+	chain.add(b)
 }

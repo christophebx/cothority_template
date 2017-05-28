@@ -93,12 +93,10 @@ func (p* ProtocolTemplate) broadcastBlocks() error {
 	// create block
 	b := make([]byte, 32)
 	block := blkparser.NewBlock(b)
-	// parse block and send to children
-	blockchain.Parse(block, 1)
+	// send block to children
 	p.SendToChildren(block)
 
 	tree := req.Roster.GenerateBinaryTree()
 	pi, err := s.CreateProtocol(template.Name, tree)
 	return nil
 }
-	//chain := blkparser.NewBlockchain
