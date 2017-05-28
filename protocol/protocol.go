@@ -13,6 +13,7 @@ node will only use the `Handle`-methods, and not call `Start` again.
 import (
 	"errors"
 	"time"
+	"math/rand"
 
 	"gopkg.in/dedis/onet.v1"
 	"gopkg.in/dedis/onet.v1/log"
@@ -89,15 +90,15 @@ func (p *ProtocolTemplate) HandleReply(reply []StructReply) error {
 }
 
 func (p* ProtocolTemplate) broadcastBlocks() error {
-	temp := 0.0
-	start := time.Now()
-	for {
-		if(time.Now().Sub(start).Seconds() > 6){
-			start = time.Now()
-			temp = rand.Float64()
-			if(temp < 0.1){
-				//broadcast a block
-			}
-		}		
-	}
+	// create block
+	b := make([]byte, 32)
+	block := blkparser.NewBlock(b)
+	// parse block and send to children
+	blockchain.Parse(block, 1)
+	p.SendToChildren(block)
+
+	tree := req.Roster.GenerateBinaryTree()
+	pi, err := s.CreateProtocol(template.Name, tree)
+	return nil
 }
+	//chain := blkparser.NewBlockchain

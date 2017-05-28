@@ -7,7 +7,6 @@ runs on the node.
 
 import (
 	"time"
-	"bytes"
 	
 	"github.com/dedis/cothority_template/protocol"
 	"gopkg.in/dedis/onet.v1"
@@ -83,14 +82,18 @@ func newService(c *onet.Context) onet.Service {
 	return s
 }
 
-func (s *Service) createAndParseBlockRequest(req *createAndParseBlockRequest) (network.Message, onet.ClientError) {
-	//chain := blkparser.NewBlockchain
-
-	b := make([]byte, 32)
-	block := blkparser.NewBlock(b)
-	blockchain.Parse(block, 1)
-	
-	tree := req.Roster.GenerateBinaryTree()
-	pi, err := s.CreateProtocol(template.Name, tree)
-
+func (s *Service) createAndParseBlockRequest(tn *onet.TreeNodeInstance, conf *onet.GenericConfig) (network.Message, onet.ClientError) {	
+	temp := 0.0
+	start := time.Now()
+	for {
+		if(time.Now().Sub(start).Seconds() > 6){
+			// poll a random number
+			temp = rand.Float64()
+			if(temp < 0.1){
+				// winner : create a new protocol
+				NewProtocol(tn, conf)
+			}
+			start = time.Now()
+		}
+	}
 }
