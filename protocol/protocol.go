@@ -100,3 +100,9 @@ func (p* ProtocolTemplate) broadcastBlocks() error {
 	pi, err := s.CreateProtocol(template.Name, tree)
 	return nil
 }
+
+func (p* ProtocolTemplate) send(Block b) error {
+	messages := make(chan Block)
+	messages <- b
+	return nil
+}

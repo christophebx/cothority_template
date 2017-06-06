@@ -102,6 +102,7 @@ func (s *Service) createAndParseBlockRequest(tn *onet.TreeNodeInstance, conf *on
 
 // function to receive the message from the children and put blocks in the blockchain
 
-func ReceiveMessage(b *block) error {
+func ReceiveMessage() error {
+	b <- messages
 	chain.add(b)
 }
